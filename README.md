@@ -1,94 +1,209 @@
-# Dynamic CMS Platform (Production-Ready Content Management System)
+# Content Management System (CMS)
 
-A production-ready Content Management System (CMS) featuring a modern admin portal, comprehensive page builder, mathematical rendering engine, tabular data matrix creator, and rich Markdown-ready document nodes. The entire application is decoupled and powered by a custom **Express.js full-stack server** and a **React Single Page Application (SPA)** with **Redux Toolkit** state coordination.
+## Project Overview
 
-## 🚀 Key Features
-
-- **Decoupled Architecture**: Real-time synchronization of the public-facing application based on database configurations fetched from the Express REST API.
-- **Unified Authentication**: Security checkpoints for administrators with login, logout, and automatic session restoration.
-- **Multi-Paragraph Rich Text**: Native Markdown formatting parser supporting complex documentation hierarchies, inline codes, block quotes, and clean visual containers.
-- **Dynamic Data Matrix Tables**: Reactive table constructor enabling administrators to add/remove columns, insert rows, edit headers, and update cells directly.
-- **Scientific Equation Renderer**: Algebraic formatting deck displaying LaTeX equations dynamically in highly legible cards with dedicated typography.
-- **Interactive Documentation Explorer**: Dynamic sidebars grouping articles by categories, providing manual search and index capabilities.
-- **Advanced State Coordination**: Comprehensive Redux Toolkit implementation handling loaded schemas, editing draft states, loading/error flags, and sessions.
+This project is a production-ready Content Management System (CMS) that enables authenticated administrators to manage website content dynamically through a secure admin panel. The application allows administrators to create, update, and delete content, with all changes reflected on the frontend without modifying the source code.
 
 ---
 
-## 🛠️ Technology Choices & Architectural Decisions
+# Technologies Used
 
-1. **Frontend: React + Redux Toolkit + Tailwind CSS**
-   - **Vite & React**: Chosen for exceptionally fast build performance and robust component rendering.
-   - **Redux Toolkit**: Centralized state controller manages all dynamic pages, section hierarchies, authentications, active loaders, and UI layout states. Local state is reserved only for local inputs (like active login fields) to maintain standard state hygiene.
-   - **Tailwind CSS v4**: Applied for zero-runtime utility styling, ensuring the layout is lightweight and fully responsive on desktops, tablets, and phones.
-   
-2. **Backend: Express.js + JSON DB File Persistence**
-   - **Express Server**: Handles routing, serving static outputs in production, and hosting secure API endpoints.
-   - **File-Based Database (`content_db.json`)**: Selected for high portability, ease of setup, and zero cloud service overhead during evaluations. It automatically persists layout structures to disk between node restarts.
-   - **Seed Engine**: Bootstraps preconfigured rich templates containing formulas, matrices, lists, and docs.
+## Frontend
+- Next.js
+- React.js
+- Redux Toolkit
+- Tailwind CSS
 
-3. **Production Bundler: Esbuild + tsx**
-   - We utilize `tsx` to run TypeScript files directly in development.
-   - For production, `esbuild` compiles `server.ts` into a unified CommonJS chunk (`dist/server.cjs`), solving any strict ES Modules path loading restrictions.
+## Backend
+- Node.js
+- Express.js
 
----
+## Database
+- MongoDB
 
-## 🔑 Administrative Evaluation Credentials
+## Authentication
+- JSON Web Token (JWT)
 
-Use the following credentials in the login workspace:
-
-- **Username**: `admin`
-- **Password**: `password123`
+## Version Control
+- Git & GitHub
 
 ---
 
-## 🏗️ Getting Started & Setup Instructions
+# Architecture Overview
 
-Ensure you have [Node.js](https://nodejs.org) (v18 or higher) installed on your system.
+The project follows a client-server architecture.
 
-### 1. Install Dependencies
-Run the install command to populate necessary node modules:
+```
+                Frontend (Next.js + React)
+                         │
+                  REST API Requests
+                         │
+                Backend (Express.js)
+                         │
+                  MongoDB Database
+```
+
+### Architecture Description
+
+- The **Frontend** provides the user interface for administrators.
+- The **Backend** exposes REST APIs and handles business logic.
+- **JWT Authentication** secures all protected routes.
+- **MongoDB** stores website content and user information.
+- The frontend communicates with the backend using REST APIs for all CRUD operations.
+
+---
+
+# Features
+
+- Secure Admin Login
+- Dashboard
+- Dynamic Content Management
+- Create Content
+- Update Content
+- Delete Content
+- Responsive User Interface
+- Protected Routes using JWT
+
+---
+
+# Setup Instructions
+
+### 1. Clone the Repository
+
 ```bash
+git clone https://github.com/your-username/cms-project.git
+```
+
+### 2. Navigate to the Project Folder
+
+```bash
+cd cms-project
+```
+
+### 3. Install Backend Dependencies
+
+```bash
+cd backend
 npm install
 ```
 
-### 2. Run the Application in Development Mode
-Start the full-stack server and watch for asset changes:
+### 4. Install Frontend Dependencies
+
 ```bash
+cd ../frontend
+npm install
+```
+
+### 5. Configure Environment Variables
+
+Create a `.env` file inside the backend folder using the values from `.env.example`.
+
+Example:
+
+```env
+PORT=5000
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
+```
+
+### 6. Start the Backend
+
+```bash
+cd backend
 npm run dev
 ```
-The server will boot on **port 3000** (`http://localhost:3000`).
 
-### 3. Build and Start the Production Release
-Compile the assets and launch the production cluster:
+### 7. Start the Frontend
+
 ```bash
-# Build the Vite SPA and bundle the Express server with esbuild
-npm run build
+cd frontend
+npm run dev
+```
 
-# Start the standalone server
-npm run start
+### 8. Open the Application
+
+Open your browser and visit:
+
+```
+http://localhost:3000
+```
+
+(or the port displayed in your terminal.)
+
+---
+
+# Assumptions
+
+- Only authenticated administrators can access the CMS.
+- MongoDB is used as the primary database.
+- JWT is used for secure authentication and authorization.
+- The frontend communicates with the backend through REST APIs.
+- Internet connectivity is required when using MongoDB Atlas.
+
+---
+
+# Environment Variables
+
+Create a `.env` file in the backend directory.
+
+Example:
+
+```env
+PORT=5000
+MONGODB_URI=
+JWT_SECRET=
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
 ```
 
 ---
 
-## 🛰️ REST API Endpoints Reference
+# Sample Credentials
 
-All modification requests (PUT/POST/DELETE) require the `Authorization` header with the bearer session token: `Bearer cms-session-admin-token-2026`.
+Email:
+```
+admin@example.com
+```
 
-| Endpoint | Method | Authentication | Description |
-| :--- | :---: | :---: | :--- |
-| `/api/content` | `GET` | No | Retrieves all pages and their sorted sections |
-| `/api/content/:slug` | `GET` | No | Retrieves a single page and sections by slug |
-| `/api/content` | `PUT` | **Admin Required** | Dispatches full system page structure updates |
-| `/api/content/reset` | `POST` | **Admin Required** | Reverts database to default seed templates |
-| `/api/auth/login` | `POST` | No | Grants token given valid username and password |
-| `/api/auth/logout` | `POST` | No | Discards active token session |
-| `/api/auth/session` | `GET` | No | Validates current header token status |
+Password:
+```
+Admin@123
+```
+
+*(Replace these with your actual credentials if they are different.)*
 
 ---
 
-## 📝 Assumptions & Considerations
+# Project Structure
 
-- **Single Container Target**: Built explicitly to run behind standard reverse proxy environments (like Cloud Run or Nginx) routing directly to port `3000`.
-- **Preconfigured Environment**: Database files initialize automatically with seed layouts upon first startup.
-- **Port Bounding**: Hardcoded to bind to `PORT=3000` on `0.0.0.0` as requested by platform rules.
-- **Local Storage Sessions**: Admin tokens are cached locally in the browser to maintain authentication across hot reloads.
+```
+cms-project/
+│
+├── frontend/
+│   ├── app/
+│   ├── components/
+│   ├── redux/
+│   └── public/
+│
+├── backend/
+│   ├── controllers/
+│   ├── models/
+│   ├── routes/
+│   ├── middleware/
+│   └── server.js
+│
+├── README.md
+├── .env.example
+└── package.json
+```
+
+---
+
+# Future Enhancements
+
+- Role-Based Access Control
+- Image Upload Support
+- Content Version History
+- Dashboard Analytics
+- Search and Filtering
+- Cloud Deployment
